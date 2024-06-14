@@ -1,0 +1,35 @@
+{
+  "name": "server-expense",
+  "version": "1.0.0",
+  "description": "Backend for expense-tracker",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [
+    "expense"
+  ],
+  "author": "Swapnil katiyar",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.592.0",
+    "aws-sdk": "^2.1638.0",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "moment-timezone": "^0.5.45",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.10.0",
+    "nodemailer": "^6.9.13",
+    "nodemon": "^3.1.2",
+    "razorpay": "^2.9.4",
+    "sequelize": "^6.37.3",
+    "yup": "^1.4.0"
+  }
+}
