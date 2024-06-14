@@ -1,9 +1,14 @@
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize("expenseTracker", "root", "Node@12345", {
-  dialect: "mysql",
-  host: "localhost",
-  timezone: "+05:30", // Set timezone option to IST
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
+  {
+    dialect: "mysql",
+    host: DB_HOST,
+    timezone: "+05:30",
+  }
+);
 
 export default sequelize;
