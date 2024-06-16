@@ -30,9 +30,31 @@ const accessLogStream = fs.createWriteStream(
 // Middleware setup
 app.use(helmet());
 app.use(morgan("combined", { stream: accessLogStream }));
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    optionsSuccessStatus: 200,
+    credentials: true,
+  })
+);
+app.options(
+  "*",
+  cors({
+    origin: true,
+    optionsSuccessStatus: 200,
+    credentials: true,
+  })
+);
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "main.d3q13o0a5nbkyi.amplifyapp.com"
+  );
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 
 // JSON Syntax Error Handling Middleware
 app.use((err, req, res, next) => {
@@ -42,6 +64,9 @@ app.use((err, req, res, next) => {
       .json(new ApiError(400, "Bad Request - Invalid JSON", req.body));
   }
   next();
+});
+app.get("/", (req, res) => {
+  res.status(200).send("<h1>hello</h1>");
 });
 
 // API routes
