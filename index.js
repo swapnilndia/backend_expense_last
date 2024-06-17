@@ -30,7 +30,7 @@ const accessLogStream = fs.createWriteStream(
 // Middleware setup
 app.use(helmet());
 app.use(morgan("combined", { stream: accessLogStream }));
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
@@ -47,14 +47,6 @@ app.options(
     credentials: true,
   })
 );
-app.use((req, res, next) => {
-  res.header(
-    "Access-Control-Allow-Origin",
-    "main.d3q13o0a5nbkyi.amplifyapp.com"
-  );
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
 
 // JSON Syntax Error Handling Middleware
 app.use((err, req, res, next) => {
