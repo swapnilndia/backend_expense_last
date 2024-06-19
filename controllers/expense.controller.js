@@ -60,6 +60,7 @@ export const expense_list_controller = async (req, res) => {
         limit: limitExpense, // Convert limit to integer
         offset: offsetExpense, // Convert offset to integer
       });
+    console.log(listOfExpense);
     if (!listOfExpense) {
       return res
         .status(500)
@@ -304,6 +305,84 @@ export const search_expense_controller = async (req, res) => {
       })
     );
   } catch (error) {
+    return res
+      .status(500)
+      .json(new ApiError(500, "Internal Server Error", { error }));
+  }
+};
+// Monthly Summary
+export const expenses_monthly_controller = async (req, res) => {
+  const { userId } = req.user;
+  try {
+    const listOfExpense = await Expense.findAll({
+      attributes: [
+        [
+          sequelize.fn("DATE_FORMAT", sequelize.col("createdAt"), "%Y-%m"),
+          "month",
+        ],
+        [sequelize.fn("SUM", sequelize.col("price")), "total_amount"],
+        [sequelize.fn("COUNT", sequelize.col("id")), "transaction_count"],
+      ],
+      group: ["month"],
+      order: [["month", "ASC"]],
+      where: {
+        userId: userId,
+      },
+    });
+
+    if (!listOfExpense) {
+      return res.status(404).json(
+        new ApiError(404, `Unable to fetch Monthly expenses`, {
+          listOfExpense,
+        })
+      );
+    }
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, `List of Monthly Expenses`, { listOfExpense })
+      );
+  } catch (error) {
+    console.error("Error fetching monthly summary:", error);
+    return res
+      .status(500)
+      .json(new ApiError(500, "Internal Server Error", { error }));
+  }
+};
+
+export const expenses_weekly_controller = async (req, res) => {
+  const { userId } = req.user;
+  try {
+    const listOfExpense = await Expense.findAll({
+      attributes: [
+        [sequelize.fn("YEAR", sequelize.col("createdAt")), "year"],
+        [sequelize.fn("WEEK", sequelize.col("createdAt"), 1), "week"],
+        [sequelize.fn("SUM", sequelize.col("price")), "total_amount"],
+        [sequelize.fn("COUNT", sequelize.col("id")), "transaction_count"],
+      ],
+      group: ["year", "week"],
+      order: [
+        ["year", "ASC"],
+        ["week", "ASC"],
+      ],
+      where: {
+        userId: userId,
+      },
+    });
+    if (!listOfExpense) {
+      return res.status(404).json(
+        new ApiError(404, `Unable to fetch Monthly expenses`, {
+          listOfExpense,
+        })
+      );
+    }
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, `List of Monthly Expenses`, { listOfExpense })
+      );
+  } catch (error) {
+    console.error("Error fetching weekly summary:", error);
     return res
       .status(500)
       .json(new ApiError(500, "Internal Server Error", { error }));

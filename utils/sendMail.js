@@ -14,7 +14,7 @@ export const sendForgotPasswordMail = async (req, res, next) => {
   const { id, email } = req.user;
   const hashedToken = await bcrypt.hash(id.toString(), 10);
   const resetPasswordTokenExpiry = Date.now() + 3600000;
-  const redirectURL = `http://localhost:5173/reset-password?token=${hashedToken}`;
+  const redirectURL = `${process.env.FRONTEND_BASE_URL}/reset-password?token=${hashedToken}`;
   const mailOptions = {
     from: process.env.NODEMAILER_EMAIL,
     to: email,
@@ -55,7 +55,7 @@ export const sendVerifyUserMail = async (req, res, next) => {
   const { userId, email } = req.user;
   const hashedToken = await bcrypt.hash(userId.toString(), 10);
   const resetPasswordTokenExpiry = Date.now() + 3600000;
-  const redirectURL = `http://localhost:5173/verify-email?token=${hashedToken}`;
+  const redirectURL = `${process.env.FRONTEND_BASE_URL}/verify-email?token=${hashedToken}`;
   const mailOptions = {
     from: process.env.NODEMAILER_EMAIL,
     to: email,

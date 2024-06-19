@@ -7,6 +7,8 @@ import {
   create_expense_controller,
   delete_expense_controller,
   expense_list_controller,
+  expenses_monthly_controller,
+  expenses_weekly_controller,
   leaderboard_controller,
   search_expense_controller,
   specific_expense_controller,
@@ -40,5 +42,7 @@ router.put(
 );
 router.get("/search/expenses", verifyAccessToken, search_expense_controller);
 router.get("/leaderboard", verifyAccessToken, leaderboard_controller);
+router.get("/expenses-monthly", verifyAccessToken, expenses_monthly_controller);
+router.get("/expenses-weekly", verifyAccessToken, expenses_weekly_controller);
 
 export default router;
