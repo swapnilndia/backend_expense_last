@@ -250,11 +250,11 @@ export const leaderboard_controller = async (req, res) => {
         {
           model: Expense,
           as: "expenses",
-          attributes: [],
+          attributes: [], // Include only necessary attributes from Expense model
         },
       ],
-      group: ["User.id"],
-      order: sequelize.literal("total_expenses DESC"), // Ordering by the alias
+      group: ["user.id"], // Use the correct alias 'user' here
+      order: [[sequelize.literal("total_expenses"), "DESC"]],
     });
     if (!allExpenses) {
       return res

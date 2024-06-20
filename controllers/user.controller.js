@@ -240,19 +240,18 @@ export const verify_email_initialize_controller = async (req, res) => {
   const { userId, verify_email_hash, verify_email_expiry_ms, email } = req.user;
 
   try {
-    const updateUser = await User.update(
+    const [updateUser] = await User.update(
       {
-        verify_email_hash: verify_email_hash,
-        verify_email_expiry_ms: verify_email_expiry_ms,
+        verify_email_hash,
+        verify_email_expiry_ms,
       },
       {
         where: {
           id: userId,
         },
-        returning: true,
       }
     );
-    console.log(updateUser);
+    console.log(updateUser, "here is updated user");
     if (!updateUser) {
       return res
         .status(400)

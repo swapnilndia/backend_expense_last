@@ -45,6 +45,7 @@ export const verifyAccessToken = async (req, res, next) => {
         }).toJSON()
       );
     }
+    console.log(decodedToken);
     req.user = decodedToken;
     next();
   } catch (error) {
