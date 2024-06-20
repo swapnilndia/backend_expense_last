@@ -9,12 +9,14 @@ import sequelize from "./configs/dbConfig.js";
 import UserRouter from "./routes/user.route.js";
 import ExpenseRouter from "./routes/expense.route.js";
 import OrderRouter from "./routes/order.route.js";
+import DownloadRouter from "./routes/download.route.js";
 import User from "./models/user.model.js";
 import Expense from "./models/expense.model.js";
 import ApiError from "./utils/ApiError.js";
 import Order from "./models/order.model.js";
 import fs from "fs";
 import path from "path";
+import Download from "./models/download.model.js";
 
 const app = express();
 const PORT = process.env.PORT || 5002;
@@ -65,6 +67,7 @@ app.get("/", (req, res) => {
 app.use("/", UserRouter);
 app.use("/", ExpenseRouter);
 app.use("/", OrderRouter);
+app.use("/", DownloadRouter);
 
 // Model associations
 User.hasMany(Expense);
@@ -72,6 +75,9 @@ Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(Download);
+Download.belongsTo(User);
 
 // Sync database and start server
 sequelize

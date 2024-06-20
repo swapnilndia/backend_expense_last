@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import Download from "../models/download.model.js";
 import * as bcrypt from "bcrypt";
 import moment from "moment-timezone";
 import {
@@ -7,7 +8,9 @@ import {
 } from "../utils/helperFunctions.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
-import { uploadTextFile } from "../utils/awsService.js";
+import { uploadtoS3 } from "../utils/awsService.js";
+
+// import { uploadtoS3 } from "../utils/awsService.js";
 
 // https://s3.ap-south-1.amazonaws.com/expense.tracker-1/Expenses-Swapnilktr1%40gmail.com-2024-06-11T14-51-16.746Z.txt
 // https://s3.ap-south-1.amazonaws.com/expense.tracker-1/Expenses-Swapnilktr1%40gmail.com-2024-06-11T14-51-16.746Z.txt
@@ -349,18 +352,5 @@ export const verify_email_finalize_controller = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json(new ApiError(500, "Something went wrong", { error }));
-  }
-};
-export const download_controller = async (req, res) => {
-  const expenses = req.expenses;
-  const { email } = req.user;
-  const stringifiedExpenses = JSON.stringify(expenses);
-  const timestamp = new Date().toISOString().replace(/:/g, "-");
-  const filename = `Expenses-${email.split("@")[0]}-${timestamp}.txt`;
-  try {
-    const fileURL = await uploadTextFile({ stringifiedExpenses, filename }); // Corrected call
-    res.status(200).json({ msg: "Success", fileURL });
-  } catch (error) {
-    res.status(200).json({ msg: "Failed", error });
   }
 };

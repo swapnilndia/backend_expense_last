@@ -90,9 +90,9 @@ export const verifyRefreshToken = async (req, res, next) => {
   //Check if access_token is present
   const access_token = tokenHeader && tokenHeader.split(" ")[1];
 
-  if (!access_token) {
+  if (!access_token || !refreshToken) {
     return res.status(401).json(
-      new ApiError(401, "Authorization token Missing", {
+      new ApiError(401, "Authorization token or refresh token is Missing", {
         access_token,
       }).toJSON()
     );

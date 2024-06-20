@@ -10,7 +10,6 @@ import {
   signinMiddleware,
   forgotPasswordMiddleware,
   resetPasswordMiddleware,
-  downloadMiddleware,
   verifyEmailFinalizeMiddleware,
 } from "../middlewares/user.middleware.js";
 import {
@@ -21,7 +20,6 @@ import {
   get_user_controller,
   forgot_password_controller,
   reset_password_controller,
-  download_controller,
   verify_email_initialize_controller,
   verify_email_finalize_controller,
 } from "../controllers/user.controller.js";
@@ -60,10 +58,5 @@ router.post(
   verifyEmailFinalizeMiddleware,
   verify_email_finalize_controller
 );
-router.get(
-  "/download",
-  verifyAccessToken,
-  downloadMiddleware,
-  download_controller
-);
+
 export default router;
