@@ -72,7 +72,7 @@ export const verfiy_payment_controller = async (req, res) => {
     .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
     .update(`${razorpay_order_id}|${razorpay_payment_id}`)
     .digest("hex");
-  const baseUrl = "http://localhost:5173";
+  const baseUrl = process.env.FRONTEND_BASE_URL;
   if (generated_signature === razorpay_signature) {
     const redirectUrl = `${baseUrl}/payment-status-success/${razorpay_order_id}`;
     const updateOrder = await Order.update(

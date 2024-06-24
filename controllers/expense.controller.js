@@ -236,24 +236,15 @@ export const update_expense_controller = async (req, res) => {
 export const leaderboard_controller = async (req, res) => {
   try {
     const allExpenses = await User.findAll({
-      attributes: [
-        "id",
-        "name",
-        "email",
-        "isPrimary",
-        [
-          sequelize.fn("SUM", sequelize.col("expenses.price")),
-          "total_expenses",
-        ],
-      ],
-      include: [
-        {
-          model: Expense,
-          as: "expenses",
-          attributes: [], // Include only necessary attributes from Expense model
-        },
-      ],
-      group: ["user.id"], // Use the correct alias 'user' here
+      attributes: ["id", "name", "email", "isPrimary", "total_amoount"],
+      // include: [
+      //   {
+      //     model: Expense,
+      //     as: "expenses",
+      //     attributes: [], // Include only necessary attributes from Expense model
+      //   },
+      // ],
+      // group: ["user.id"], // Use the correct alias 'user' here
       order: [[sequelize.literal("total_expenses"), "DESC"]],
     });
     if (!allExpenses) {
